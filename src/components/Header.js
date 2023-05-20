@@ -41,12 +41,13 @@ export default function Header() {
         <div className=' text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap'>
           {session && (
             <div className=' cursor-pointer' title="Sign Out" onClick={signOut}>
-              <img src={session.user.image} alt="user-img" className=' h-10 rounded-full' />
+              <img src={session.user.image} alt="user-img" className=' h-10 rounded-full hidden sm:flex' />
             </div>
           )}
           <div className=' link' onClick={!session ? signIn : signOut}>
-            <p>
-              {session ? `Hello, ${session.user.name}` : "SignIn"}
+            <p >
+              {/* {session ? `Hello, ${session.user.name}` : "SignIn"} */}
+              {session ? `Hello, ${session.user.name.split(' ')[0]}` : "SignIn"}
             </p>
             <p className=' font-extrabold md:text-sm'>Account & Lists</p>
           </div>
