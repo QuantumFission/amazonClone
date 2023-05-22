@@ -32,7 +32,7 @@ const Order = ({ id, amount, amountShipping, items, timeStamp, images }) => {
       </div>
       <div className="p-10">
         <div className="flex space-x-6 overflow-x-auto">
-          {images?.map((image) => (
+          {images.map((image) => (
             <m.div
               key={image}
               initial={{ opacity: 0, scale: 0.5 }}
