@@ -13,14 +13,14 @@ export default function CheckoutProduct({
     category,
     image,
     rating,
+    hasPrime
 }) {
 
     const dispatch = useDispatch();
 
     const itemRating = Math.floor(rating.rate + 1);
-    let hasPrime;
-    if (itemRating > 3) { hasPrime = true; } else { hasPrime = false; }
 
+    
     const addItemToCart = () => {
         const product = {
             id,
@@ -30,6 +30,7 @@ export default function CheckoutProduct({
             category,
             image,
             rating,
+            hasPrime,
         };
 
         dispatch(addToBasket(product))

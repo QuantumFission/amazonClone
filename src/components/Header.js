@@ -16,7 +16,7 @@ export default function Header() {
   const router = useRouter();
   const items = useSelector(selectItems);
 
-  
+
   return (
     <header>
       {/* ------top------ */}
@@ -41,7 +41,13 @@ export default function Header() {
         <div className=' text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap'>
           {session && (
             <div className=' cursor-pointer' title="Sign Out" onClick={signOut}>
-              <img src={session.user.image} alt="user-img" className=' h-10 rounded-full hidden sm:flex' />
+              <Image
+                src={session.user.image}
+                width={40}
+                height={40}
+                alt='logo'
+                className=' cursor-pointer rounded-full w-auto h-auto hidden sm:flex'
+              />
             </div>
           )}
           <div className=' link' onClick={!session ? signIn : signOut}>
@@ -51,11 +57,13 @@ export default function Header() {
             </p>
             <p className=' font-extrabold md:text-sm'>Account & Lists</p>
           </div>
-          <div className=' link'>
+          <div 
+            className=' link' 
+            onClick={() => router.push("/orders")}>
             <p>Returns</p>
             <p className=' font-extrabold md:text-sm'>& Orders</p>
           </div>
-          <div 
+          <div
             onClick={() => router.push("/checkout")}
             className=' relative link flex items-center gap-1'>
 

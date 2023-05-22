@@ -1,12 +1,23 @@
-import firebase from "firebase";
-import Providers from "next-auth/providers";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBqqRzll5qFGoy0fJAchtSwQwazx94y750",
-    authDomain: "amzn-2-yt-93d06.firebaseapp.com",
-    projectId: "amzn-2-yt-93d06",
-    storageBucket: "amzn-2-yt-93d06.appspot.com",
-    messagingSenderId: "904274194839",
-    appId: "1:904274194839:web:311db8e6d21ddf003114d2"
-  };
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+};
+
+const app = !firebase.apps.length
+  ? firebase.initializeApp(firebaseConfig)
+  : firebase.app();
+
+const db = app.firestore();
+
+export default db;

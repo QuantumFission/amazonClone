@@ -5,7 +5,8 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  darkMode: false,
+  // darkMode is media now 
+  media: false,
   theme: {
     extend: {
       colors: {
@@ -24,5 +25,7 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require("@tailwindcss/line-clamp")],
+  plugins: [],
+  // plugins: [require("@tailwindcss/line-clamp")],
+  // line-clamp is by-default in tailwind now
 }

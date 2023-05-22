@@ -2,18 +2,38 @@ import React from 'react';
 import Header from '@/components/Header';
 import Head from 'next/head';
 import Image from 'next/image';
+import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { selectItems, selectTotal } from '@/slices/basketSlice';
 import CheckoutProduct from '@/components/CheckoutProduct';
-import { useSession } from 'next-auth/react';
+import { useSession, getSession } from 'next-auth/react';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(process.env.stripe_public_key);
 
 
 export default function Checkout() {
 
-    const {data: session} = useSession();
+    const { data: session } = useSession();
     const items = useSelector(selectItems);
     const total = useSelector(selectTotal);
 
+    const createCheckOutSession = async () => {
+        const stripe = await stripePromise;
+
+        // Call the backend to create a checkout session...
+        const checkoutSession = await axios.post("/api/create-checkout-session", {
+            items: items,
+            email: session.user.email
+        });
+
+        // Redirect user/customer to Stripe Checkout
+        const result = await stripe.redirectToCheckout({
+            sessionId: checkoutSession.data.id
+        })
+
+        if (result.error) alert(result.error.message);
+    };
 
     return (
         <div className=' bg-gray-100'>
@@ -68,33 +88,52 @@ export default function Checkout() {
                 <div className=' flex flex-col bg-white p-10 shadow-md'>
                     {items.length > 0 && (
                         <>
-                           <h2 className=' whitespace-nowrap'>
-                                Subtotal 
+                            <h2 className=' whitespace-nowrap'>
+                                Subtotal
                                 ({items.length} {
-                                    items.length > 1 
-                                    ? "items" 
-                                    : "item"
+                                    items.length > 1
+                                        ? "items"
+                                        : "item"
                                 }): <span className=' font-bold'>
                                     $ {total}
-                                    </span> 
-                           </h2>
+                                </span>
+                            </h2>
 
-                           <button
-                           disabled={!session} 
-                           className={`button mt-2 ${
-                            !session 
-                            && "from-gray-300 to-gray-500 border-gray-200 text-gray-300 cursor-not-allowed"
-                           }`}>
+                            <button
+                                role="link"
+                                onClick={createCheckOutSession}
+                                disabled={!session}
+                                className={`button mt-2 ${!session
+                                    && "from-gray-300 to-gray-500 border-gray-200 text-gray-300 cursor-not-allowed"
+                                    }`}>
                                 {
                                     !session
-                                    ? "Sign in to checkout"
-                                    : "Proceed to checkout"
+                                        ? "Sign in to checkout"
+                                        : "Proceed to checkout"
                                 }
-                           </button>
+                            </button>
                         </>
                     )}
                 </div>
             </main>
         </div>
     )
+}
+
+
+export async function getServerSideProps(context) {
+    const session = await getSession(context);
+
+    if (!session) {
+        return {
+            props: {},
+        };
+    }
+
+    return {
+        props: {
+            session: session
+        },
+    };
+
 }

@@ -29,6 +29,7 @@ export default function Product({
       category,
       image,
       rating,
+      hasPrime,
     };
 
     // Sending the product as an action to the REDUX store
