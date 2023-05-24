@@ -20,6 +20,6 @@ pnpm dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
-- [Live website : ] (https://amazon-clone-ciym2ppjs-codeandcoffie.vercel.app) 
+- [Live website : ](https://amazon-clone-ciym2ppjs-codeandcoffie.vercel.app) 
 
 
